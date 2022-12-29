@@ -1,0 +1,40 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{.Release.Name}}
+  namespace: {{.Release.Namespace}}
+spec:
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 2
+  concurrencyPolicy: Forbid
+  schedule: {{.Values.cronRule}}
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 600
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: github-webhook-status-checker
+              image: kycfeel/github-webhook-status-checker
+
+{{- if .Values.secretName }}
+              envFrom:
+                - secretRef:
+                  name: {{.Values.secretName}}
+
+{{- else }}
+
+              env:
+                - name: GITHUB_REPO_OWNER
+                  value: {{.Values.githubRepoOwner}}
+                - name: GITHUB_REPO
+                  value: "{{.Values.githubRepo}}"
+                - name: GITHUB_TOKEN
+                  value: {{.Values.githubToken}}
+                - name: SLACK_WEBHOOK_URL
+                  value: {{.Values.slackWebhookURL}}
+
+{{- end }}
+              

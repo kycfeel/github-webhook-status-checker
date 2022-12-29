@@ -1,0 +1,12 @@
+# Default values for github-webhook-status-checker.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+cronRule: '0 */1 * * *' 
+
+githubRepoOwner: 
+githubRepo:
+githubToken:
+slackWebhookURL:
+
+# You could also specify the existing secret name
+secretName:

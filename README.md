@@ -45,4 +45,22 @@ crontab -e
 0 */1 * * * docker run --rm -e GITHUB_REPO_OWNER=<YOUR REPO OWNER NAME> -e GITHUB_REPO=<YOUR REPOSITORY NAME> -e GITHUB_TOKEN="YOUR GITHUB ACCESS TOKEN" -e SLACK_WEBHOOK_URL="YOUR SLACK WEBHOOK URL" kycfeel/github-webhook-status-checker
 ```
 
+### On Kubernetes
+
+Make sure to edit the `helm/values.yaml` file to fill up the values below.
+
+```
+githubRepoOwner: 
+githubRepo:
+githubToken:
+slackWebhookURL:
+```
+
+To install, run: 
+
+```
+helm install github-webhook-status-checker helm/
+```
+
+
 
